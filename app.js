@@ -473,6 +473,7 @@ async function loadData() {
       if (j.meetings && j.meetings.length) {
         FedData.meetings = j.meetings;
         if (j.currentRate) FedData.currentRate = j.currentRate;
+        if (j.rateSource === "fred") fredLive = true;  // กรอบดอกเบี้ยมาจาก FRED (ผ่าน workflow/backend)
         setSource(j.source || "live", j.asOf);
         return;
       }
@@ -487,6 +488,7 @@ async function loadData() {
       if (j.meetings && j.meetings.length) {
         FedData.meetings = j.meetings;
         if (j.currentRate) FedData.currentRate = j.currentRate;
+        if (j.rateSource === "fred") fredLive = true;  // กรอบดอกเบี้ยมาจาก FRED (ผ่าน workflow/backend)
         setSource(j.source || "live", j.asOf);
         return;
       }
@@ -904,7 +906,7 @@ function renderDataStatus() {
     ["FedWatch (โอกาสปรับดอกเบี้ย)", fwLive ? "real" : "sample",
       fwLive ? "จาก Fed Funds futures (อัปเดตวันละครั้ง)" : "ยังไม่ได้ดึงข้อมูลสด"],
     ["กรอบดอกเบี้ยปัจจุบัน", fredLive ? "real" : "mixed",
-      fredLive ? "จาก FRED (สด)" : "ค่าจริงล่าสุด (อัปเดตมือ) — ใส่ FRED key เพื่อดึงสด"],
+      fredLive ? "จาก FRED (อัปเดตวันละครั้ง)" : "ค่าตั้งต้นในโค้ด — ตั้ง secret FRED_API_KEY เพื่อดึงจริง"],
     ["Dot Plot", "real", "Fed SEP มี.ค. 2026 (อัปเดตมือทุกไตรมาส)"],
     ["ประวัติการเปลี่ยนแปลงโอกาส", histLive ? "real" : "sample",
       histLive ? "สะสมรายวันจาก backend" : "รอสะสม ≥ 2 วัน"],

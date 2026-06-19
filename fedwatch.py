@@ -138,9 +138,15 @@ def build_payload(current_rate: dict | None = None,
     """
     today = today or dt.date.today()
 
-    # 1) กรอบดอกเบี้ยปัจจุบัน
+    # 1) กรอบดอกเบี้ยปัจจุบัน + แหล่งที่มา
     if current_rate is None:
-        current_rate = (fred_current_rate(fred_key) if fred_key else None) or dict(DEFAULT_RATE)
+        fetched = fred_current_rate(fred_key) if fred_key else None
+        if fetched:
+            current_rate, rate_source = fetched, "fred"
+        else:
+            current_rate, rate_source = dict(DEFAULT_RATE), "default"
+    else:
+        rate_source = "provided"
     cur_mid = (current_rate["lower"] + current_rate["upper"]) / 2
     cur_lower = current_rate["lower"]
 
@@ -247,6 +253,7 @@ def build_payload(current_rate: dict | None = None,
 
     return {
         "source": source,
+        "rateSource": rate_source,       # "fred" | "default" | "provided"
         "asOf": dt.datetime.now().isoformat(timespec="seconds"),
         "currentRate": current_rate,
         "meetings": meetings_out,
