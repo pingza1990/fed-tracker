@@ -1,6 +1,7 @@
 {
   "source": "yahoo",
-  "asOf": "2026-06-19T06:04:41",
+  "rateSource": "fred",
+  "asOf": "2026-06-19T06:05:19",
   "currentRate": {
     "lower": 3.5,
     "upper": 3.75,
